@@ -3,10 +3,10 @@ const Recipes = require("./recipes-model.js");
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-    //await Recipes.get();
+router.getById("/", async (req, res, next) => {
+    const recipe = await Recipes.find(req.params.id);
     try {
-        res.status(200).send("We're brewing up some stuff for you, but you'll have to wait a sec")
+        res.status(200).send(recipe)
     } catch(err) {
         next(err);
     }

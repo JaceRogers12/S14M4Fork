@@ -48,7 +48,12 @@ exports.up = async function(knex) {
         .inTable("ingredients")
     tbl.primary(["recipe_id", "ingredient_id"])
   })
-  .createTable("ingredients_quantities", tbl => {
+  .createTable("recipes_ingredients_quantities", tbl => {
+    tbl.integer("recipe_id")
+        .unsigned()
+        .notNullable()
+        .references("recipe_id")
+        .inTable("recipes")
     tbl.integer("ingredient_id")
         .unsigned()
         .notNullable()
@@ -59,7 +64,7 @@ exports.up = async function(knex) {
         .notNullable()
         .references("quantity_id")
         .inTable("quantities")
-    tbl.primary(["ingredient_id", "quantity_id"])
+    tbl.primary(["recipe_id", "ingredient_id", "quantity_id"])
   })
 };
 
@@ -68,7 +73,7 @@ exports.up = async function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function(knex) {
-  return await knex.schema.dropTableIfExists("ingredients_quantities")
+  return await knex.schema.dropTableIfExists("recipes_ingredients_quantities")
     .dropTableIfExists("recipes_ingredients")
     .dropTableIfExists("steps")
     .dropTableIfExists("quantities")
